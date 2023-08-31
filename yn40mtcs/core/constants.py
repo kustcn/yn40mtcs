@@ -1,0 +1,1 @@
+LOGGER_NAME = 'yn40mtcs'
