@@ -15,9 +15,10 @@ logger = logging.getLogger(LOGGER_NAME)
 class Telescope(Device):
     def __init__(self, config):
         super(Telescope, self).__init__(config)
-        self._lock=threading.Lock()
+        self._lock = threading.Lock()
         self.declare_attributes()
         self.read_config()
+        self.Threads = []
 
     def declare_attributes(self):
         self.AZ_cmd = Attribute('AZ_cmd', 'Latitude', value=0, unit="deg", group='Basic', description="input command  position AZ") 
@@ -86,52 +87,47 @@ class Telescope(Device):
         print('--------------------HARDWARE STATUS--------------------')
         self.Hardware.DumpStatus()
 
+    def print_usage(self):
+        print('The commands are ')
+        print('Help/?              Print this help')
+        print('Tell                Telescope state')
+        print('AZEL AZ EL          Point telescope to given AZ EL')
+        print('RADEC RA DEC        Keep telescope track to given RA DEC')
+        print('Off RA_off DEC_off  Set offsets')
+        print('Start               Start control loop')
+        print('Halt                Stop telescope')
+        print('Exit                Exit current program')
     def run(self, command):
-        logger.info(command)
         super(Telescope, self).run(command)
 
         cmds = command.split(' ')
         if cmds[0]=='help' or cmds[0] =='?':
-            print('The commands are ')
-            print('Help/?              Print this help')
-            print('Tell                Telescope state')
-            print('AZEL AZ EL          Point telescope to given AZ EL')
-            print('RADEC RA DEC        Keep telescope track to given RA DEC')
-            print('Off RA_off DEC_off  Set offsets')
-            print('Start               Start control loop')
-            print('Halt                Stop telescope')
-            print('Exit                Exit current program')
+            self.print_usage()
         elif cmds[0]=='Tell':
-            self.ShowState();
-
+            self.ShowState()
         elif cmds[0]=='Halt':
             self.StopControlThread()
             logger.info('Control thread stopped')
-
         elif cmds[0]=='Start':
             self.StartControlThread()
             logger.info('Control thread started')  # rizhi
-
         elif cmds[0]=='Exit':
             #Do not modify this function, otherwise you will be dead
             os._exit(0)
-
         elif cmds[0]=='AZEL':
-            if len(cmds)>=3:
+            if len(cmds) >= 3:
                 az = float(cmds[1])
                 el = float(cmds[2])
                 self.TrackAZEL(az,el)
             else:
                 logger.error('Missing operation variable')
-
         elif cmds[0]=='RADEC':
-            if len(cmds)>=3:
+            if len(cmds) >= 3:
                 ra = cmds[1]
                 dec = cmds[2]
                 self.TrackRADEC(ra,dec)
             else:
                 logger.error('Missing operation variable')
-
         elif cmds[0]=='Off':
             if len(cmds)>=3:
                 az_off = float(cmds[1])
@@ -139,7 +135,6 @@ class Telescope(Device):
                 self.SetAZEL_off(az_off,el_off)
             else:
                 logger.error('Missing operation variable')
-
         else:
             logger.error('command not found')
 
