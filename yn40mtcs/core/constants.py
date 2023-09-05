@@ -1,1 +1,22 @@
+from enum import Enum
+
 LOGGER_NAME = 'yn40mtcs'
+HISTORY_VALUES_QUEUE_SIZE = 50
+
+class STATE(Enum):
+    ON=1
+    OFF=2
+    CLOSE=3
+    OPEN=4
+    INSERT=5
+    EXTRACT=6
+    MOVING=7
+    STANDBY=8
+    FAULT=9
+    INIT=10
+    RUNNING=11
+    ALARM=12
+    DISABLE=13
+    UNKNOWN=14
+
+STATE_NAMES = [None, "ON", "OFF", "CLOSE", "OPEN", "INSERT", "EXTRACT", "MOVING", "STANDBY", "FAULT", "INIT", "RUNNING", "ALARM", "DISABLE", "UNKNOWN"]
