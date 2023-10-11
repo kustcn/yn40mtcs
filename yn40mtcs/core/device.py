@@ -2,11 +2,13 @@ import logging
 
 from .attribute import Attribute, AttrWriteType
 from .constants import *
+from .config import ConfigClass
+from .utils import data_path
 
-logger = logging.getLogger(LOGGER_NAME)
+logger = logging.getLogger('{}.core.{}'.format(LOGGER_NAME, __name__))
 class Device(object):
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, cfg_fil):
+        self.config = ConfigClass(data_path(cfg_fil))
         self.attributes = {}
         self.commands = {}
         self.state = STATE.OFF

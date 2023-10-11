@@ -10,7 +10,7 @@ import sys
 import logging
 from yn40mtcs.core.constants import *
 
-logger = logging.getLogger(LOGGER_NAME)
+logger = logging.getLogger('{}.func.{}'.format(LOGGER_NAME, __name__))
 
 class AcuProtcl:
     '''
@@ -24,9 +24,9 @@ class AcuProtcl:
     def track_on(self, az0, az, el):
         '''
             Tracking
-            protocol information：标识    帧长   设备号  class    func     帧号     AZ             EL             校验码
-                                ‘FS’    18     1       0        '5'      0        1800000        300000
-            hexadecimal format：  46 53   12 00  01      00       05       00       40 77 1b 00    e0 93 04 00    00 00
+            protocol information: 标识    帧长   设备号  class    func     帧号       AZ             EL             校验码
+                                  'FS'    18     1       0        '5'      0        1800000        300000
+            hexadecimal format:   46 53   12 00  01      00       05       00       40 77 1b 00    e0 93 04 00    00 00
         '''
         logger.debug('az0={} az= {} el= {}  in {}'.format(str(az0),str(az),str(el),sys._getframe().f_code.co_name))
         _package0 = struct.pack('2s', self._CID)
@@ -68,12 +68,12 @@ class AcuProtcl:
     def stop(self):
         '''
             Stopping
-            protocol information：标识    帧长    设备号   class    func    帧号                      校验码
-                                ‘FS’    13      1        0        ‘3’     1
-            hexadecimal format：  46 53   0d 00   01       00       03      01      00     00    00   42 5c
-            +protocol information：标识    帧长   设备号   class    func    帧号    ?      ?      ?    校验码
-            +                     ‘FS’    13     1        0        ‘3’     2       ?      ?      ?
-            +hexadecimal format：  46 53   0d 00  01       00       03      02      00     00     00   8f 79
+            protocol information: 标识    帧长    设备号   class    func    帧号                       校验码
+                                  'FS'    13      1        0        '3'     1
+            hexadecimal format:   46 53   0d 00   01       00       03      01      00     00    00   42 5c
+            +protocol information: 标识    帧长   设备号   class    func    帧号      ?      ?      ?    校验码
+            +                      'FS'    13     1        0        '3'     2       ?      ?      ?
+            +hexadecimal format:   46 53   0d 00  01       00       03      02      00     00     00   8f 79
         '''
         _package0 = struct.pack('2s', self._CID)
         _FM_LENGTH = 13 # Frame Length
@@ -109,9 +109,9 @@ class AcuProtcl:
     def query(self):
         '''
             Querying
-            protocol information：标识    帧长    设备号  class   func   校验码
-                                ‘FS’    9       1       16      ‘1’
-            hexadecimal format：  46 53   09 00   01      10      01     77 5c
+            protocol information: 标识    帧长    设备号  class   func   校验码
+                                  'FS'    9       1       16      '1'
+            hexadecimal format:   46 53   09 00   01      10      01     77 5c
         '''
         _package0 = struct.pack('2s', self._CID)
         _FM_LENGTH = 9 # Frame Length
@@ -130,9 +130,9 @@ class AcuProtcl:
     def standby(self):
         '''
             Standby
-            protocol information：标识    帧长    设备号  class   func   校验码
-                                ‘FS’    9       1       0       ‘1’
-            hexadecimal format：  46 53   09 00   01      00      01     77 5c
+            protocol information: 标识    帧长    设备号  class   func   校验码
+                                  'FS'    9       1       0       '1'
+            hexadecimal format:   46 53   09 00   01      00      01     77 5c
         '''
         _package0 = struct.pack('2s', self._CID)
         _FM_LENGTH = 9 # Frame Length
@@ -148,15 +148,15 @@ class AcuProtcl:
         return _package
 
     #--------------------Normal Status Info--------------------
-    def normalstatus(self,status):
+    def normal_status(self,status):
         '''
             Normal status information
-            protocol information：标识    帧长   设备号  class   func   帧号   ？  远控   伺服   内外圈   AZ
-                                ‘FS'    30     2       17      ‘1'    0      ？  0      1      1        1800000
-            hexadecimal format：  46 53   1e 00  02      11      01     00     00  00     01     01       40 77 1b 00
-            +protocol information：EL             AZ方向  EL方向  AZ速度  EL速度   AZ齿受力面   EL齿受力面  校验码
+            protocol information: 标识    帧长   设备号  class   func   帧号     ?    远控   伺服   内外圈     AZ
+                                  'FS'    30     2       17      '1'    0      ?     0      1      1        1800000
+            hexadecimal format:   46 53   1e 00  02      11      01     00     00    00     01     01       40 77 1b 00
+            +protocol information: EL             AZ方向  EL方向  AZ速度  EL速度   AZ齿受力面   EL齿受力面  校验码
             +                      300000         0       0       0       0        33           33
-            +hexadecimal format：  e0 93 04 00    00      00      00 00   00 00    21           21          3d 4f
+            +hexadecimal format:   e0 93 04 00    00      00      00 00   00 00    21           21          3d 4f
         '''
         def tohexstr(s):
             return ''.join('%02x' % ord(c) for c in s)
@@ -199,12 +199,12 @@ class AcuProtcl:
         return (_AZ,_EL,_INOUT,_AZSPEED,_ELSPEED,_ACI)
 
     #--------------------Error Status Info--------------------
-    def errorstatus(self,status):
+    def error_status(self,status):
         '''
             Error status information
-            protocol information：标识   帧长    设备号  class   func   帧号  校验码
-                                ‘FS’   10      2       2       ‘4’    3
-            hexadecimal format：  46 53  0a 00   02      02      04     03    77 5c
+            protocol information: 标识   帧长    设备号  class   func   帧号  校验码
+                                  'FS'   10      2       2       '4'    3
+            hexadecimal format:   46 53  0a 00   02      02      04     03    77 5c
         '''
         _RES = struct.unpack('=2s',status[0:2])
         _LONGT = struct.unpack('=1H',status[2:4])
@@ -214,6 +214,4 @@ class AcuProtcl:
         _VACM5 = struct.unpack('=1B',status[7:8])
         _VERF = struct.unpack('=2B',status[8:10])
         #print 'check code : %d%d' % verf
-
         return False
-        #return True

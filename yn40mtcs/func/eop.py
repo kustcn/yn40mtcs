@@ -1,10 +1,17 @@
+#!/usr/bin/env pyhton3.7
+# -*- coding: utf-8 -*-
+'''
+Author : Huang Yuxiang, Li Kejia, Dai Wei, Wei Shoulin
+Date   : Aug. 24th 2019
+         Sep. 10th 2023
+'''
+
 import numpy as np
 
 from yn40mtcs.core.utils import data_path
 
 class EOP(object):
     def __init__(self, filepath= data_path('iers.txt')):
-        # tel1=tel.Telescope()
         self.iers=np.loadtxt(filepath)
         self.vmjd=self.iers[:,0]
         self.vpmx=self.iers[:,1]

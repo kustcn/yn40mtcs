@@ -2,12 +2,14 @@ import optparse
 import os, sys
 import logging
 import pkg_resources
-
+import sys
+#sys.path.append('/home/huangyuxiang/work/yn40m')
+#sys.path.append('/home/huangyuxiang/work/yn40m/yn40mtcs')
 from yn40mtcs.core.log import setup_logging
 from yn40mtcs.core.config import ConfigClass
 from yn40mtcs.core.constants import LOGGER_NAME
 
-logger = logging.getLogger(LOGGER_NAME)
+logger = logging.getLogger('{}.cmd.{}'.format(LOGGER_NAME, __name__))
 
 def init_parser_cmd():
     parser = optparse.OptionParser(usage="Usage: python %prog [options]")

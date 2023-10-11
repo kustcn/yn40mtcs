@@ -1,1 +1,5 @@
-numpy
+numpy, 
+scipy, 
+astropy, 
+matplotlib, 
+pyvisa,

@@ -78,7 +78,7 @@ class ConfigClass(ConfigParser):
         if os.path.isfile(path):
             return path
         else:
-            fullpath = pkg_resources.resource_filename(__name__, path)
+            fullpath = pkg_resources.resource_filename('yn40mtcs', path) # (__name__, path), 
             if os.path.isfile(fullpath):
                 return fullpath
 
@@ -95,6 +95,7 @@ class ConfigClass(ConfigParser):
             return secValues
 
         path = self._getPath(cgfile)
+        print(path)
         if path is None:
             return
         super().read(path)

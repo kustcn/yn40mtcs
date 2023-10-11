@@ -15,7 +15,7 @@ class WriteLevel(Enum):
     ADMIN=2
 
 class Attribute(dict):
-    def __init__(self, key = '', label = '', value = None, unit=None, description = '', display_level = DisplayLevel.OPERATOR,writable = AttrWriteType.READ, write_level = WriteLevel.ADMIN, polling_period = -1, group = '',need_load = False):
+    def __init__(self, key = '', label = '', value = None, unit=None, description = '', display_level = DisplayLevel.OPERATOR, writable = AttrWriteType.READ, write_level = WriteLevel.ADMIN, polling_period = -1, group = '', need_load = False):
         super(Attribute, self).__init__()
         self["key"] = key
         self["label"] = label
@@ -49,7 +49,6 @@ class Attribute(dict):
     @property
     def value(self):
         return self["value"]
-
     @value.setter
     def value(self, v):
         self["label"] = v

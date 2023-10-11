@@ -11,10 +11,12 @@ from yn40mtcs.core.attribute import Attribute
 from yn40mtcs.core.constants import *
 from yn40mtcs.func import acu39, conv_coord, virtualacu
 
-logger = logging.getLogger(LOGGER_NAME)
+logger = logging.getLogger('{}.device.{}'.format(LOGGER_NAME, __name__))
 class Telescope(Device):
-    def __init__(self, config):
-        super(Telescope, self).__init__(config)
+    def __init__(self, cfg_fil):
+        super(Telescope, self).__init__(cfg_fil)
+        self.cfg_fil = cfg_fil
+        self.status =  STATE_NAMES[7]
         self._lock = threading.Lock()
         self.declare_attributes()
         self.read_config()
@@ -37,26 +39,26 @@ class Telescope(Device):
         self.sourcename= Attribute('SourceName', 'SourceName', value='', unit="", group='Basic', description="Source Name") 
     
     def read_config(self):
-        self._Longitude = [float(v) for v in self.config.Longitude.split(':')]
-        self._Latitude = [float(v) for v in self.config.Latitude.split(':')]
-        self._Height = self.config.H
-        self._Atmosphere = self.config.Atmosphere
-        self._PointingParameter = np.loadtxt(data_path(self.config.PointingPar))  # Read parameters from new_pointing_par.txt
+        self._Longitude = [float(v) for v in self.config['longitude'].split(':')]
+        self._Latitude = [float(v) for v in self.config['latitude'].split(':')]
+        self._Height = self.config['h']
+        self._Atmosphere = self.config['atmosphere']
+        self._PointingParameter = np.loadtxt(data_path(self.config['pointing_par']))  # Read parameters from new_pointing_par.txt
 
         # Selecting the virtual control device
-        if self.config.Hardware=='ACU39':
+        if self.config['hardware']=='ACU39':
             self.Hardware = acu39.Acu39Tel()
-        elif self.config.Hardware=='FAKE':
-            self.Hardware = virtualacu.VirtualTel(self.config)
+        elif self.config['hardware']=='FAKE':
+            self.Hardware = virtualacu.VirtualTel(self.cfg_fil)
         else:
             logger.error('Unknown Hardware')
             sys.exit(0)
 
         # Ra-Dec to Az-El
-        self._CoorGeo = conv_coord.CoordGeometry(iersfile=self.config.IERSfile, ephfile=self.config.EPHfile)
+        self._CoorGeo = conv_coord.CoordGeometry(iersfile=self.config['iers_fil'], ephfile=self.config['eph_fil'])
         
     #--------------------Display antenna status information--------------------
-    def ShowState(self):
+    def show_state(self):
         if self.state.value == 'EXIT':
             raise RuntimeError("Exiting, please check log!")
         if self.state.value == 'DISCONNECT':

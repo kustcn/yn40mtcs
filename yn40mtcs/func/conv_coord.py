@@ -30,7 +30,7 @@ from yn40mtcs.core.utils import data_path
 iers.conf.auto_download = False
 
 class CoordGeometry:
-    def __init__(self, iersfile='iers.txt', ephfile='DE405.1950.2050'):
+    def __init__(self, iersfile='iers.txt', ephfile='DE435.1950.2050'):
         self.fileEOP = data_path(iersfile)
         self.fileEPH = data_path(ephfile)
         self.EOP = eop.EOP(filepath=self.fileEOP)
@@ -92,24 +92,7 @@ class CoordGeometry:
         if boldebug:
             print("--------------------Set Condition of Site--------------------")
             sofa1.PrintSSC()
-
-        '''Reference System Correction
-        # pmx = 0.21770915206021815
-        # pmx=50.9950e-3
-        # pmy = 0.37205597810181973 #
-        # pmy=376.723e-3
-        # cipx = -0.12227782407402991e-3
-        # cipx=0.269e-3
-        # cipy = 0.04791673611104488e-3
-        # cipy=-0.274e-3
-        # dut1 = -0.1552601546249956 #
-        # dut1=155.06675e-3
-        # sofa1.CoordinateCorrection(pmx,pmy,cipx,cipy,dut1)
-        # print "*"*30
-        # if boldebug:
-        #     print "--------------------Correction of Reference System--------------------"
-        #     sofa1.PrintCooCor()'''
-
+        
         # Set Catalog of Observational Source
         ralist = (COS.split())[0].split(':')
         declist =( COS.split())[1].split(':')
