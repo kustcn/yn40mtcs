@@ -78,7 +78,7 @@ class ConfigClass(ConfigParser):
         if os.path.isfile(path):
             return path
         else:
-            fullpath = pkg_resources.resource_filename('yn40mtcs', path) # (__name__, path), 
+            fullpath = pkg_resources.resource_filename(__name__, path) # (__name__, path), 
             if os.path.isfile(fullpath):
                 return fullpath
 
@@ -124,5 +124,8 @@ class ConfigClass(ConfigParser):
 
 
 if __name__ == "__main__":
-    config = ConfigClass(sys.argv[1])
+    # config = ConfigClass(sys.argv[1])
+    config = ConfigClass('../data/default.cfg')
     print("Properties:\n", config.properties)
+    print(config.getValue('acu_addr'))
+    print(config.acu_addr)

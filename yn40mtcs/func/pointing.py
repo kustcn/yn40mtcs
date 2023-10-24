@@ -34,10 +34,10 @@ class Point:
         # Instantiate class 'Telescope' and TCP/IP Connecting
         self._Tele = Telescope(cfgpath='data/default.cfg')
         self.middir = midpath
-        self._Scan = self.middir + self._Tele.config['scan_fil']
-        self._Cal = self.middir + self._Tele.config['cal_fil']
+        self._Scan = self.middir + self._Tele.config.scan_fil
+        self._Cal = self.middir + self._Tele.config.cal_fil
         self._srclst = SourceList()
-        self._INST = self._Tele['pm_addr'] # 'TCPIP::178.1.16.32::INSTR'
+        self._INST = self._Tele.config.pm_addr # 'TCPIP::178.1.16.32::INSTR'
         
         # Start thread background
         self._Tele.StartControlThread()

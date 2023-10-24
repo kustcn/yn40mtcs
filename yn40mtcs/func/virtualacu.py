@@ -31,19 +31,19 @@ class VirtualTel(object):
         self._INOUT=0
         self._ACI='0'
         self.status=STATE_NAMES[STATE.HEALTH.value] #'HEALTH', 'STANDBY', 'ERROR', 'POWEROFF'
-        self.config = ConfigClass(data_path(cfg_fil))
+        self.config = cfg_fil
         self.acu_prtcl = acuprotocol.AcuProtcl()
         
-        self._Longitude = [float(v) for v in self.config['longitude'].split(':')]
-        self._Latitude = [float(v) for v in self.config['latitude'].split(':')]
+        self._Longitude = [float(v) for v in self.config.longitude.split(':')]
+        self._Latitude = [float(v) for v in self.config.latitude.split(':')]
         
         self.sock = None
         self.connect()
 
     def connect(self):
-        self.serv_addr = self.config['host_addr']
-        self.port = self.config['host_port']
-        self.buf_size = self.config['buffer_size'] # Network connection parameters
+        self.serv_addr = self.config.acu_addr
+        self.port = self.config.acu_port
+        self.buf_size = self.config.acu_buffer_size # Network connection parameters
         self.ADDR = (self.serv_addr, self.port)
         self.sock = socket(AF_INET, SOCK_STREAM) # instantiate python-class 'socket'
         self.sock.settimeout(5)

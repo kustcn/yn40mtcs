@@ -11,13 +11,14 @@ import logging
 
 from yn40mtcs.core.config import ConfigClass
 from yn40mtcs.core.utils import data_path
+from yn40mtcs.core.constants import LOGGER_NAME
 
-logger = logging.getLogger('{}.device.{}'.format(LOGGER_NAME, __name__))
+logger = logging.getLogger('{}.func.{}'.format(LOGGER_NAME, __name__))
 class SourceList:
     '''
     get the catalogue entry of sourcelist
     '''
-    def __init__(self,cfg_fil='data/default.cfg',filenum='0'):
+    def __init__(self,cfg_fil='default.cfg',filenum='0'):
         '''
         filenum = '0' : calibrators for pointing
                   '1' : pulsar list
@@ -26,13 +27,13 @@ class SourceList:
         # execfile(cfgpath, {'this':self})
         config = ConfigClass(data_path(cfg_fil))
         if filenum=='0':
-            self.filename = data_path(config.properties['calibrator_list']) # self.config.Rootpath + self.config.Calibrator_List
+            self.filename = data_path(config.calibrator_list) # self.config.Rootpath + self.config.Calibrator_List
             logger.info('The file of "calibrator_list" is reading !!!')
         elif filenum=='1':
-            self.filename = data_path(config.properties['pulsar_list']) # self.config.Rootpath + self.config.Pulsar_List
+            self.filename = data_path(config.pulsar_list) # self.config.Rootpath + self.config.Pulsar_List
             logger.info('The file of "pulsar_list" is reading !!!')
         elif filenum=='2':
-            self.filename = data_path(config.properties['vlbi_schedule']) # self.config.Rootpath + self.config.Vlbi_Schedule
+            self.filename = data_path(config.vlbi_schedule) # self.config.Rootpath + self.config.Vlbi_Schedule
             logger.info('The file of "vlbi_schedul" is reading !!!')
         #
         #self.Catalog = np.loadtxt(self.filename, dtype='str', comments='#', delimiter='\t')

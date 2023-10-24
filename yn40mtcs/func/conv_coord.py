@@ -38,7 +38,7 @@ class CoordGeometry:
 
         self.sofa=sofa.SOFA()
         iers.IERS_A_URL = data_path('finals2000A.all')
-        iers_a = iers.IERS_A.open(iers.IERS_A_URL)
+        # iers_a = iers.IERS_A.open(iers.IERS_A_URL)
         iers.IERS.iers_table = iers.IERS_A.open(iers.IERS_A_URL)
 
     def radec2azel(self, COS, SC=[102,47,45.6,25,1,40.8,1974.0], MCOW=[800,25,0.5,50000], curtim='now', boldebug=False, backend='SOFA'):
